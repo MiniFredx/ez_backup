@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import os, zipfile
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -18,7 +18,7 @@ class Ui_MainWindow(object):
         MainWindow.setAutoFillBackground(False)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.buttonAddonBackup = QtWidgets.QPushButton(self.centralwidget, clicked=lambda: self.press_backup(self.lineBackupDir.text()))
+        self.buttonAddonBackup = QtWidgets.QPushButton(self.centralwidget)
         self.buttonAddonBackup.setGeometry(QtCore.QRect(350, 110, 121, 23))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -42,6 +42,12 @@ class Ui_MainWindow(object):
         self.labelBackupDir = QtWidgets.QLabel(self.centralwidget)
         self.labelBackupDir.setGeometry(QtCore.QRect(0, 60, 81, 21))
         self.labelBackupDir.setObjectName("labelBackupDir")
+        self.toolButton = QtWidgets.QToolButton(self.centralwidget)
+        self.toolButton.setGeometry(QtCore.QRect(410, 30, 25, 19))
+        self.toolButton.setObjectName("toolButton")
+        self.toolButton_2 = QtWidgets.QToolButton(self.centralwidget)
+        self.toolButton_2.setGeometry(QtCore.QRect(410, 60, 25, 19))
+        self.toolButton_2.setObjectName("toolButton_2")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -58,55 +64,13 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "WoW AddOn Backup"))
         self.buttonAddonBackup.setText(_translate("MainWindow", "Backup AddOns"))
-        self.lineBackupDir.setText(_translate("MainWindow", r"C:\Users\Gaming\Google Drive\Code\Python\Automate... book programs"))
+        self.lineBackupDir.setText(_translate("MainWindow", " C:\\Program Files\\World of Warcraft\\_retail_\\Interface\\AddOns"))
         self.lineBackupLocationDir.setText(_translate("MainWindow", " C:\\My Backups\\AddOns"))
         self.labelAddonDir.setText(_translate("MainWindow", "Addon Dir:"))
         self.labelBackupDir.setText(_translate("MainWindow", "Backup Location:"))
-        
+        self.toolButton.setText(_translate("MainWindow", "..."))
+        self.toolButton_2.setText(_translate("MainWindow", "..."))
 
-    def press_backup(self, folder):
-        # Backup the entire contents of "folder" into a ZIP file.
-
-        folder = os.path.abspath(folder) # make sure folder is absolute
-
-        # Figure out the filename this code should used based on
-        # what files already exist.
-
-        number = 1
-
-        while True:
-            zipFilename = os.path.basename(folder) + '_' + str(number) + '.zip'
-
-            if not os.path.exists(zipFilename):
-                break
-            number = number + 1
-
-
-        # Create the ZIP file.
-        os.chdir(r'C:\Users\Gaming\Google Drive\Code\Python\Automate... book programs\ZipTests')
-        print(f'Creating {zipFilename}...')
-        backupZip = zipfile.ZipFile(zipFilename, 'w')
-
-        # Walk the entire folder tree and compress the files in each folder.
-
-        for foldername, subfolders, filenames in os.walk(folder):
-            print(f'Adding files in {foldername}...')
-
-            # Add the current folder to the ZIP file.
-            backupZip.write(foldername)
-
-            # Add all the files in this folder to the ZIP file.
-            for filename in filenames:
-                if filename.startswith(os.path.basename(folder) + '_') and filename.endswith('.zip'):
-                    continue # don't backup the backup ZIP files
-                backupZip.write(os.path.join(foldername, filename))
-
-        backupZip.close()
-        print('Done.')
-
-
-    def press_test(self):
-        print(self.lineBackupDir.text())
 
 if __name__ == "__main__":
     import sys
